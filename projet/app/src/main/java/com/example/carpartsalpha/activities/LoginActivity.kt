@@ -5,11 +5,14 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import com.example.carpartsalpha.R
 import com.example.carpartsalpha.databinding.ActivityLoginBinding
+import com.example.carpartsalpha.firestore.FirestoreClass
+import com.example.carpartsalpha.models.User
 import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : BaseActivity(), View.OnClickListener {
@@ -93,12 +96,10 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         // login user firebase auth
             FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
-                    hideProgressDialog()
-
                     if(task.isSuccessful){
-                        // TODO send user to MAin activity
-                        showErrorSnackBar("You are logged in successfully.",false)
+                       FirestoreClass().getUserDetails(this@LoginActivity)
                     }else{
+                        hideProgressDialog()
                         showErrorSnackBar(task.exception!!.message.toString(),true)
                     }
 
@@ -106,4 +107,24 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
         }
     }
+
+    /**
+    * A function to notify user that logged in success and get the user details from the FireStore database after authentication.
+    */
+    fun userLoggedInSuccess(user: User) {
+
+        // Hide the progress dialog.
+        hideProgressDialog()
+
+        // Print the user details in the log as of now.
+        Log.i("First Name: ", user.firstName)
+        Log.i("Last Name: ", user.lastName)
+        Log.i("Email: ", user.email)
+
+        // Redirect the user to Main Screen after log in.
+        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+        finish()
+    }
+    // END
+
 }
