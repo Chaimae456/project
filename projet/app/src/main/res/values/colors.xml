@@ -12,4 +12,6 @@
     <color name="secondary_text">#1F1727</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="colorSnackBarError">#F44336</color>
+    <color name="colorSnackBarSuccess">#4CAF50</color>
 </resources>
