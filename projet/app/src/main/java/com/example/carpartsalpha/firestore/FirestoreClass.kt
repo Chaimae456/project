@@ -1,6 +1,8 @@
 package com.example.carpartsalpha.firestore
 
 import android.app.Activity
+import android.content.Context
+import android.content.SharedPreferences
 import android.util.Log
 import com.example.carpartsalpha.activities.LoginActivity
 import com.example.carpartsalpha.activities.RegisterActivity
@@ -66,6 +68,23 @@ class FirestoreClass {
 
                 // Here we have received the document snapshot which is converted into the User Data model object.
                 val user = document.toObject(User::class.java)!!
+
+                // TODO Step 2: Create an instance of the Android SharedPreferences.
+                // START
+                val sharedPreferences =
+                    activity.getSharedPreferences(
+                        Constants.CARPARTS_PREFERENCES,
+                        Context.MODE_PRIVATE
+                    )
+
+                // Create an instance of the editor which is help us to edit the SharedPreference.
+                val editor: SharedPreferences.Editor = sharedPreferences.edit()
+                editor.putString(
+                    Constants.LOGGED_IN_USERNAME,
+                    "${user.firstName} ${user.lastName}"
+                )
+                editor.apply()
+
                 // START
                 when (activity) {
                     is LoginActivity -> {

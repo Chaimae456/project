@@ -14,10 +14,14 @@
         android:theme="@style/Theme.Carpartsalpha"
         tools:targetApi="31">
         <activity
-            android:name=".activities.ForgotPasswordActivity"
+            android:name=".activities.UserProfileActivity"
             android:theme="@style/Theme.Carpartsalpha.noActionBar"
             android:screenOrientation="portrait"
-            />
+            android:exported="false" />
+        <activity
+            android:name=".activities.ForgotPasswordActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Carpartsalpha.noActionBar" />
         <activity
             android:name=".activities.BaseActivity"
             android:exported="false" />

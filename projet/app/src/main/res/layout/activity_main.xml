@@ -6,50 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".activities.MainActivity">
  <com.example.carpartsalpha.outils.BoldTextView
+     android:id="@+id/tv_main"
      android:layout_width="wrap_content"
      android:layout_height="wrap_content"
-     android:text="itjustatest"
+     android:text="HEllO"
      app:layout_constraintBottom_toBottomOf="parent"
      app:layout_constraintEnd_toEndOf="parent"
      app:layout_constraintStart_toStartOf="parent"
      app:layout_constraintTop_toTopOf="parent" />
 
-    <com.example.carpartsalpha.outils.TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="itjustatest"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.489"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.433" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.589" />
-
-    <com.example.carpartsalpha.outils.EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="190dp"
-        android:hint="hello"
-        tools:ignore="MissingConstraints" />
-
-    <com.example.carpartsalpha.outils.Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Click ME"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="569dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
