@@ -1,10 +1,8 @@
-package com.example.carpartsalpha.activities
+package com.example.carpartsalpha.ui.activities
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.carpartsalpha.R
-import com.example.carpartsalpha.databinding.ActivityLoginBinding
 import com.example.carpartsalpha.databinding.ActivityMainBinding
 import com.example.carpartsalpha.outils.Constants
 

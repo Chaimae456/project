@@ -1,4 +1,4 @@
-package com.example.carpartsalpha.activities
+package com.example.carpartsalpha.ui.activities
 
 
 import android.os.Build

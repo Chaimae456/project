@@ -1,11 +1,9 @@
-package com.example.carpartsalpha.activities
+package com.example.carpartsalpha.ui.activities
 
 import android.content.Intent
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
@@ -13,6 +11,7 @@ import com.example.carpartsalpha.R
 import com.example.carpartsalpha.databinding.ActivityLoginBinding
 import com.example.carpartsalpha.firestore.FirestoreClass
 import com.example.carpartsalpha.models.User
+import com.example.carpartsalpha.outils.Constants
 import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : BaseActivity(), View.OnClickListener {
@@ -116,16 +115,13 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         // Hide the progress dialog.
         hideProgressDialog()
 
-        // Print the user details in the log as of now.
-        Log.i("First Name: ", user.firstName)
-        Log.i("Last Name: ", user.lastName)
-        Log.i("Email: ", user.email)
-
         // Redirect the user to Main Screen after log in.
         if(user.profileCompleted==0){
-            startActivity(Intent(this@LoginActivity, UserProfileActivity::class.java))
+            val intent = Intent(this@LoginActivity, UserProfileActivity::class.java)
+            intent.putExtra(Constants.EXTRA_USER_DETAILS,user)
+            startActivity(intent)
         }else{
-            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+            startActivity(Intent(this@LoginActivity, DashboardActivity::class.java))
         }
 
 

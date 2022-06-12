@@ -11,15 +11,28 @@
         <entry key="..\:/Users/ZR/Documents/GitHub/project/projet/app/src/main/res/drawable/drawable_gender_tap_selector.xml" value="0.1305" />
         <entry key="..\:/Users/ZR/Documents/GitHub/project/projet/app/src/main/res/drawable/drawable_gender_tap_text_color_selector.xml" value="0.1305" />
         <entry key="..\:/Users/ZR/Documents/GitHub/project/projet/app/src/main/res/drawable/ic_black_color_back_24dp.xml" value="0.1" />
+        <entry key="..\:/Users/ZR/Documents/GitHub/project/projet/app/src/main/res/drawable/ic_vector_chevron_right.xml" value="0.231" />
+        <entry key="..\:/Users/ZR/Documents/GitHub/project/projet/app/src/main/res/drawable/ic_vector_dashboard.xml" value="0.165" />
+        <entry key="..\:/Users/ZR/Documents/GitHub/project/projet/app/src/main/res/drawable/ic_vector_orders.xml" value="0.165" />
+        <entry key="..\:/Users/ZR/Documents/GitHub/project/projet/app/src/main/res/drawable/ic_vector_products.xml" value="0.165" />
+        <entry key="..\:/Users/ZR/Documents/GitHub/project/projet/app/src/main/res/drawable/ic_vector_settings.xml" value="0.144" />
         <entry key="..\:/Users/ZR/Documents/GitHub/project/projet/app/src/main/res/drawable/user_image_background.xml" value="0.1305" />
         <entry key="..\:/Users/ZR/Documents/GitHub/project/projet/app/src/main/res/layout-v23/activity_register.xml" value="0.14814814814814814" />
         <entry key="..\:/Users/ZR/Documents/GitHub/project/projet/app/src/main/res/layout/activity_base.xml" value="0.21693840579710144" />
+        <entry key="..\:/Users/ZR/Documents/GitHub/project/projet/app/src/main/res/layout/activity_dashboard.xml" value="0.18" />
         <entry key="..\:/Users/ZR/Documents/GitHub/project/projet/app/src/main/res/layout/activity_forgot_password.xml" value="0.22" />
         <entry key="..\:/Users/ZR/Documents/GitHub/project/projet/app/src/main/res/layout/activity_login.xml" value="0.14814814814814814" />
         <entry key="..\:/Users/ZR/Documents/GitHub/project/projet/app/src/main/res/layout/activity_main.xml" value="0.19658119658119658" />
+        <entry key="..\:/Users/ZR/Documents/GitHub/project/projet/app/src/main/res/layout/activity_main2.xml" value="0.1" />
         <entry key="..\:/Users/ZR/Documents/GitHub/project/projet/app/src/main/res/layout/activity_register.xml" value="0.1" />
+        <entry key="..\:/Users/ZR/Documents/GitHub/project/projet/app/src/main/res/layout/activity_settings.xml" value="0.25" />
         <entry key="..\:/Users/ZR/Documents/GitHub/project/projet/app/src/main/res/layout/activity_user_profile.xml" value="0.25" />
         <entry key="..\:/Users/ZR/Documents/GitHub/project/projet/app/src/main/res/layout/dialog_progress.xml" value="0.5" />
+        <entry key="..\:/Users/ZR/Documents/GitHub/project/projet/app/src/main/res/layout/fragment_dashboard.xml" value="0.1" />
+        <entry key="..\:/Users/ZR/Documents/GitHub/project/projet/app/src/main/res/layout/fragment_orders.xml" value="0.2151268115942029" />
+        <entry key="..\:/Users/ZR/Documents/GitHub/project/projet/app/src/main/res/layout/fragment_products.xml" value="0.1707193515704154" />
+        <entry key="..\:/Users/ZR/Documents/GitHub/project/projet/app/src/main/res/menu/bottom_nav_menu.xml" value="0.35104166666666664" />
+        <entry key="..\:/Users/ZR/Documents/GitHub/project/projet/app/src/main/res/menu/dashboard_menu.xml" value="0.1" />
         <entry key="..\:/Users/ZR/Documents/GitHub/projet/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1555" />
         <entry key="..\:/Users/ZR/Documents/GitHub/projet/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1555" />
         <entry key="..\:/Users/ZR/Documents/GitHub/projet/app/src/main/res/layout/activity_main.xml" value="0.17760416666666667" />

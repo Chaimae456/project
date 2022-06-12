@@ -1,11 +1,9 @@
-package com.example.carpartsalpha.activities
+package com.example.carpartsalpha.ui.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import com.example.carpartsalpha.R
 import com.example.carpartsalpha.databinding.ActivityForgotPasswordBinding
-import com.example.carpartsalpha.databinding.ActivityRegisterBinding
 import com.google.firebase.auth.FirebaseAuth
 
 class ForgotPasswordActivity : BaseActivity() {

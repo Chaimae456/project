@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.UserProfileActivity">
+    tools:context=".ui.activities.UserProfileActivity">
 
 
     <androidx.appcompat.widget.Toolbar
@@ -15,7 +15,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="match_parent"
@@ -67,6 +66,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/user_image_background" />
+
+
             </FrameLayout>
 
             <com.google.android.material.textfield.TextInputLayout
