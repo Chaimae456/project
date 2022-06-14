@@ -14,10 +14,13 @@ open class DashboardItemsListAdapter(
     private var list: ArrayList<Product>
     ): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    // A global variable for OnClickListener interface.
+    private var onClickListener: OnClickListener? = null
+
     class MyViewHolder(val binding: ItemDashboardLayoutBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return DashboardItemsListAdapter.MyViewHolder(
+        return MyViewHolder(
             ItemDashboardLayoutBinding.inflate(
                 LayoutInflater.from(
                     parent.context
@@ -37,6 +40,16 @@ open class DashboardItemsListAdapter(
             )
             holder.binding.tvDashboardItemTitle.text = model.title
             holder.binding.tvDashboardItemPrice.text = "${model.price} MAD"
+
+            // Assign the on click event for item view and pass the required params in the on click function.
+            // START
+            holder.itemView.setOnClickListener {
+                if (onClickListener != null) {
+                    onClickListener!!.onClick(position, model)
+                }
+            }
+            // END
+
         }
     }
     /**
@@ -45,5 +58,26 @@ open class DashboardItemsListAdapter(
     override fun getItemCount(): Int {
         return list.size
     }
+    /**
+     * A function for OnClickListener where the Interface is the expected parameter and assigned to the global variable.
+     *
+     * @param onClickListener
+     */
+    fun setOnClickListener(onClickListener: OnClickListener) {
+        this.onClickListener = onClickListener
+    }
+
+    /**
+     * An interface for onclick items.
+     */
+    interface OnClickListener {
+
+        // Define a function to get the required params when user clicks on the item view in the interface.
+        // START
+        fun onClick(position: Int, product: Product)
+        // END
+    }
+    // END
+
 
 }

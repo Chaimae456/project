@@ -1,6 +1,7 @@
 package com.example.carpartsalpha.ui.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,12 +9,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.carpartsalpha.R
 import com.example.carpartsalpha.databinding.ItemListLayoutBinding
 import com.example.carpartsalpha.models.Product
+import com.example.carpartsalpha.outils.Constants
 import com.example.carpartsalpha.outils.GlideLoader
+import com.example.carpartsalpha.ui.activities.ProductDetailsActivity
 import com.example.carpartsalpha.ui.fragments.ProductsFragment
 
 open class ProductListsAdapter(
     private val context: Context,
-    private var list: ArrayList<Product>
+    private var list: ArrayList<Product>,
+    private val fragment: ProductsFragment
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     class MyViewHolder(val binding: ItemListLayoutBinding) : RecyclerView.ViewHolder(binding.root)
@@ -36,16 +40,21 @@ open class ProductListsAdapter(
 
             holder.binding.tvItemName.text = model.title
             holder.binding.tvItemPrice.text = "${model.price} MAD"
-            /*
-            // TODO Step 4: Assigning the click event to the delete button.
+
+            // Assigning the click event to the delete button.
             // START
             holder.binding.ibDeleteProduct.setOnClickListener {
-
-                // TODO Step 8: Now let's call the delete function of the ProductsFragment.
+                // Now let's call the delete function of the ProductsFragment.
                 // START
                 fragment.deleteProduct(model.product_id)
                 // END
-            }*/
+            }
+            holder.binding.etItemProduct.setOnClickListener {
+                val intent  = Intent(context, ProductDetailsActivity::class.java)
+                intent.putExtra(Constants.EXTRA_PRODUCT_ID, model.product_id)
+                context.startActivity(intent)
+            }
+
             // END
         }
     }

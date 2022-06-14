@@ -12,6 +12,7 @@ object Constants {
     const val CARPARTS_PREFERENCES: String = "CarpartsPrefs"
     const val LOGGED_IN_USERNAME: String = "logged_in_username"
     const val EXTRA_USER_DETAILS: String = "extra_user_details"
+    const val EXTRA_PRODUCT_ID: String = "extra_product_id"
     const val READ_STORAGE_PERMISSION_CODE = 2
     const val PICK_IMAGE_REQUEST_CODE = 1
     const val MALE: String ="male"
@@ -25,6 +26,8 @@ object Constants {
     const val LAST_NAME: String = "lastName"
     const val PRODUCT_IMAGE: String = "Product_Image"
     const val USER_ID: String = "user_id"
+
+
     /**
      * A function for user profile image selection from phone storage.
      */

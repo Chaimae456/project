@@ -11,6 +11,8 @@ import com.example.carpartsalpha.R
 import com.example.carpartsalpha.databinding.FragmentDashboardBinding
 import com.example.carpartsalpha.firestore.FirestoreClass
 import com.example.carpartsalpha.models.Product
+import com.example.carpartsalpha.outils.Constants
+import com.example.carpartsalpha.ui.activities.ProductDetailsActivity
 import com.example.carpartsalpha.ui.activities.SettingsActivity
 import com.example.carpartsalpha.ui.adapter.DashboardItemsListAdapter
 
@@ -96,10 +98,30 @@ class DashboardFragment : BaseFragment() {
 
            val adapter = DashboardItemsListAdapter(requireActivity(), dashboardItemsList)
            binding.rvDashboardItems.adapter = adapter
+
+            //T Define the onclick listener here that is defined in the adapter class and handle the click on an item in the base class.
+            // Earlier we have done is a different way of creating the function and calling it from the adapter class based on the instance of the class.
+
+            // START
+            adapter.setOnClickListener(object :
+                DashboardItemsListAdapter.OnClickListener {
+                override fun onClick(position: Int, product: Product) {
+
+                    // Launch the product details screen from the dashboard.
+                    // START
+                    val intent = Intent(context, ProductDetailsActivity::class.java)
+                    intent.putExtra(Constants.EXTRA_PRODUCT_ID, product.product_id)
+                    startActivity(intent)
+                    // END
+                }
+            })
+            // END
         } else {
             binding.rvDashboardItems.visibility = View.GONE
             binding.tvNoDashboardItemsFound.visibility = View.VISIBLE
         }
+
+
     }
 
     /**

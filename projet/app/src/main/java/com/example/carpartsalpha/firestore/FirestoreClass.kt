@@ -126,7 +126,37 @@ class FirestoreClass {
             }
     }
     // END
+    /**
+     * A function to get the product details based on the product id.
+     */
+    fun getProductDetails(activity: ProductDetailsActivity, productId: String) {
 
+        // The collection name for PRODUCTS
+        mFireStore.collection(Constants.PRODUCTS)
+            .document(productId)
+            .get() // Will get the document snapshots.
+            .addOnSuccessListener { document ->
+
+                // Here we get the product details in the form of document.
+                Log.e(activity.javaClass.simpleName, document.toString())
+
+                // Convert the snapshot to the object of Product data model class.
+                val product = document.toObject(Product::class.java)!!
+
+                //  Notify the success result.
+                // START
+                activity.productDetailsSuccess(product)
+                // END
+            }
+            .addOnFailureListener { e ->
+
+                // Hide the progress dialog if there is an error.
+                activity.hideProgressDialog()
+
+                Log.e(activity.javaClass.simpleName, "Error while getting the product details.", e)
+            }
+    }
+    // END
 
     /**
      * A function to update the user profile data into the database.
@@ -332,6 +362,36 @@ class FirestoreClass {
                 // Hide the progress dialog if there is any error which getting the dashboard items list.
                 fragment.hideProgressDialog()
                 Log.e(fragment.javaClass.simpleName, "Error while getting dashboard items list.", e)
+            }
+    }
+
+    /**
+     * A function to delete the product from the cloud firestore.
+     */
+    fun deleteProduct(fragment: ProductsFragment, productId: String) {
+
+        mFireStore.collection(Constants.PRODUCTS)
+            .document(productId)
+            .delete()
+            .addOnSuccessListener {
+
+                // Notify the success result to the base class.
+                // START
+                // Notify the success result to the base class.
+                fragment.productDeleteSuccess()
+
+                 // END
+            }
+            .addOnFailureListener { e ->
+
+                // Hide the progress dialog if there is an error.
+                fragment.hideProgressDialog()
+
+                Log.e(
+                    fragment.requireActivity().javaClass.simpleName,
+                    "Error while deleting the product.",
+                    e
+                )
             }
     }
 }
