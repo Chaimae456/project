@@ -119,8 +119,8 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
                         if(mSelectImageFileUri != null) {
                             FirestoreClass().uploadImageToCloudStorage(
                                 this@UserProfileActivity,
-                                mSelectImageFileUri
-                            )
+                                mSelectImageFileUri,
+                                Constants.USER_PROFILE_IMAGE)
                         }else{
                             updateUserProfileDetails()
                         }
@@ -276,8 +276,8 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
      * @param imageURL After successful upload the Firebase Cloud returns the URL.
      */
     fun imageUploadSuccess(imageURL: String) {
-        mUserProfileImageUrl = imageURL
-        updateUserProfileDetails()
+            mUserProfileImageUrl = imageURL
+            updateUserProfileDetails()
     }
     // END
 }

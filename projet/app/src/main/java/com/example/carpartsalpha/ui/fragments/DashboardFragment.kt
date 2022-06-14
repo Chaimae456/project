@@ -5,11 +5,16 @@ import android.os.Bundle
 import android.view.*
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.carpartsalpha.R
 import com.example.carpartsalpha.databinding.FragmentDashboardBinding
+import com.example.carpartsalpha.firestore.FirestoreClass
+import com.example.carpartsalpha.models.Product
 import com.example.carpartsalpha.ui.activities.SettingsActivity
+import com.example.carpartsalpha.ui.adapter.DashboardItemsListAdapter
 
-class DashboardFragment : Fragment() {
+class DashboardFragment : BaseFragment() {
 
     private var _binding: FragmentDashboardBinding? = null
 
@@ -31,8 +36,6 @@ class DashboardFragment : Fragment() {
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textDashboard
-            textView.text = "Welcome to the dashboard"
         return root
     }
 
@@ -66,6 +69,46 @@ class DashboardFragment : Fragment() {
         }
         return super.onOptionsItemSelected(item)
     }
-    // END
 
+    override fun onResume() {
+        super.onResume()
+
+        getDashboardItemsList()
+    }
+    // END
+    /**
+     * A function to get the success result of the dashboard items from cloud firestore.
+     *
+     * @param dashboardItemsList
+     */
+    fun successDashboardItemsList(dashboardItemsList: ArrayList<Product>) {
+
+        // Hide the progress dialog.
+        hideProgressDialog()
+
+        if (dashboardItemsList.size > 0) {
+
+            binding.rvDashboardItems.visibility = View.VISIBLE
+            binding.tvNoDashboardItemsFound.visibility = View.GONE
+
+            binding.rvDashboardItems.layoutManager = LinearLayoutManager(activity)
+            binding.rvDashboardItems.setHasFixedSize(true)
+
+           val adapter = DashboardItemsListAdapter(requireActivity(), dashboardItemsList)
+           binding.rvDashboardItems.adapter = adapter
+        } else {
+            binding.rvDashboardItems.visibility = View.GONE
+            binding.tvNoDashboardItemsFound.visibility = View.VISIBLE
+        }
+    }
+
+    /**
+     * A function to get the dashboard items list from cloud firestore.
+     */
+    private fun getDashboardItemsList() {
+        // Show the progress dialog.
+        showProgressDialog(resources.getString(R.string.please_wait))
+
+        FirestoreClass().getDashboardItemsList(this@DashboardFragment)
+    }
 }
