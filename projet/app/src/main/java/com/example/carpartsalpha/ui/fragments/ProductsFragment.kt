@@ -155,7 +155,7 @@ class   ProductsFragment : BaseFragment() {
         builder.setTitle(resources.getString(R.string.delete_dialog_title))
         //set message for alert dialog
         builder.setMessage(resources.getString(R.string.delete_dialog_message))
-        builder.setIcon(android.R.drawable.ic_dialog_alert)
+        builder.setIcon(R.drawable.drawable_gender_tap_selector)
 
         //performing positive action
         builder.setPositiveButton(resources.getString(R.string.yes)) { dialogInterface, _ ->

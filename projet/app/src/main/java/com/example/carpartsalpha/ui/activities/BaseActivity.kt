@@ -89,5 +89,7 @@ import com.google.android.material.snackbar.Snackbar
          @Suppress("DEPRECATION")
          Handler().postDelayed({ doubleBackToExitPressedOnce = false }, 2000)
      }
+
+
      // END
 }

@@ -23,7 +23,7 @@
 
         <ImageView
             android:id="@+id/iv_item_image"
-            android:layout_width="@dimen/item_image_width"
+            android:layout_width="214dp"
             android:layout_height="@dimen/item_image_height"
             android:contentDescription="@string/content_description"
             android:scaleType="fitXY" />
@@ -67,6 +67,7 @@
         android:id="@+id/ib_delete_product"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:background="@android:color/transparent"
         android:contentDescription="@string/content_description"
         android:foreground="?attr/selectableItemBackgroundBorderless"

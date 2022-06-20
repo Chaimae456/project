@@ -12,6 +12,7 @@ import com.example.carpartsalpha.databinding.FragmentDashboardBinding
 import com.example.carpartsalpha.firestore.FirestoreClass
 import com.example.carpartsalpha.models.Product
 import com.example.carpartsalpha.outils.Constants
+import com.example.carpartsalpha.ui.activities.CartListActivity
 import com.example.carpartsalpha.ui.activities.ProductDetailsActivity
 import com.example.carpartsalpha.ui.activities.SettingsActivity
 import com.example.carpartsalpha.ui.adapter.DashboardItemsListAdapter
@@ -68,6 +69,10 @@ class DashboardFragment : BaseFragment() {
                 // END
                 return true
             }
+            R.id.navigation_cartlist -> {
+                startActivity(Intent(activity, CartListActivity::class.java))
+                return true
+            }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -111,6 +116,7 @@ class DashboardFragment : BaseFragment() {
                     // START
                     val intent = Intent(context, ProductDetailsActivity::class.java)
                     intent.putExtra(Constants.EXTRA_PRODUCT_ID, product.product_id)
+                    intent.putExtra(Constants.EXTRA_PRODUCT_OWNER_ID, product.user_id)
                     startActivity(intent)
                     // END
                 }

@@ -8,8 +8,7 @@ import android.util.Log
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.load.ImageHeaderParser
 import com.example.carpartsalpha.R
-import com.example.carpartsalpha.models.Product
-import com.example.carpartsalpha.models.User
+import com.example.carpartsalpha.models.*
 import com.example.carpartsalpha.outils.Constants
 import com.example.carpartsalpha.ui.activities.*
 import com.example.carpartsalpha.ui.fragments.DashboardFragment
@@ -394,4 +393,486 @@ class FirestoreClass {
                 )
             }
     }
+
+
+    //  Create a function to add the item to the cart in the cloud firestore.
+    // START
+    /**
+     * A function to add the item to the cart in the cloud firestore.
+     *
+     * @param activity
+     * @param addToCart
+     */
+    fun addCartItems(activity: ProductDetailsActivity, addToCart: CartItem) {
+
+        mFireStore.collection(Constants.CART_ITEMS)
+            .document()
+            // Here the userInfo are Field and the SetOption is set to merge. It is for if we wants to merge
+            .set(addToCart, SetOptions.merge())
+            .addOnSuccessListener {
+
+                // Here call a function of base activity for transferring the result to it.
+                activity.addToCartSuccess()
+            }
+            .addOnFailureListener { e ->
+
+                activity.hideProgressDialog()
+
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error while creating the document for cart item.",
+                    e
+                )
+            }
+    }
+// END
+// Create a function check whether the item already exist in the cart or not.
+    // START
+    /**
+     * A function to check whether the item already exist in the cart or not.
+     */
+    fun checkIfItemExistInCart(activity: ProductDetailsActivity, productId: String) {
+
+        mFireStore.collection(Constants.CART_ITEMS)
+            .whereEqualTo(Constants.USER_ID, getCurrentUserID())
+            .whereEqualTo(Constants.PRODUCT_ID, productId)
+            .get()
+            .addOnSuccessListener { document ->
+
+                Log.e(activity.javaClass.simpleName, document.documents.toString())
+
+                //  Notify the success result to the base class.
+                // START
+                // If the document size is greater than 1 it means the product is already added to the cart.
+                if (document.documents.size > 0) {
+                    activity.productExistsInCart()
+                } else {
+                    activity.hideProgressDialog()
+                }
+                // END
+            }
+            .addOnFailureListener { e ->
+                // Hide the progress dialog if there is an error.
+                activity.hideProgressDialog()
+
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error while checking the existing cart list.",
+                    e
+                )
+            }
+    }
+// TODO Step 4: Create a function to get the cart items list from the cloud firestore.
+    /**
+     * A function to get the cart items list from the cloud firestore.
+     *
+     * @param activity
+     */
+    fun getCartList(activity: Activity) {
+        // The collection name for PRODUCTS
+        mFireStore.collection(Constants.CART_ITEMS)
+            .whereEqualTo(Constants.USER_ID, getCurrentUserID())
+            .get() // Will get the documents snapshots.
+            .addOnSuccessListener { document ->
+
+                // Here we get the list of cart items in the form of documents.
+                Log.e(activity.javaClass.simpleName, document.documents.toString())
+
+                // Here we have created a new instance for Cart Items ArrayList.
+                val list: ArrayList<CartItem> = ArrayList()
+
+                // A for loop as per the list of documents to convert them into Cart Items ArrayList.
+                for (i in document.documents) {
+
+                    val cartItem = i.toObject(CartItem::class.java)!!
+                    cartItem.id = i.id
+
+                    list.add(cartItem)
+                }
+
+                // Notify the success result.
+                // START
+                when (activity) {
+                    is CartListActivity -> {
+                        activity.successCartItemsList(list)
+                    }
+                    is CheckoutActivity -> {
+                        activity.successCartItemsList(list)
+                    }
+                }
+                // END
+            }
+            .addOnFailureListener { e ->
+                // Hide the progress dialog if there is an error based on the activity instance.
+                when (activity) {
+                    is CartListActivity -> {
+                        activity.hideProgressDialog()
+                    }
+                    is CheckoutActivity -> {
+                        activity.hideProgressDialog()
+                    }
+                }
+
+                Log.e(activity.javaClass.simpleName, "Error while getting the cart list items.", e)
+            }
+    }
+
+    // TODO Step 1: Create a function to get all the product list from the cloud firestore.
+    // START
+    /**
+     * A function to get all the product list from the cloud firestore.
+     *
+     * @param activity The activity is passed as parameter to the function because it is called from activity and need to the success result.
+     */
+    fun getAllProductsList(activity: Activity) {
+        // The collection name for PRODUCTS
+        mFireStore.collection(Constants.PRODUCTS)
+            .get() // Will get the documents snapshots.
+            .addOnSuccessListener { document ->
+
+                // Here we get the list of boards in the form of documents.
+                Log.e("Products List", document.documents.toString())
+
+                // Here we have created a new instance for Products ArrayList.
+                val productsList: ArrayList<Product> = ArrayList()
+
+                // A for loop as per the list of documents to convert them into Products ArrayList.
+                for (i in document.documents) {
+
+                    val product = i.toObject(Product::class.java)
+                    product!!.product_id = i.id
+
+                    productsList.add(product)
+                }
+
+                // Pass the success result of the product list to the cart list activity.
+                // START
+                when(activity){
+                    is CartListActivity -> {
+                        activity.successProductsListFromFireStore(productsList)
+                    }
+                    is CheckoutActivity -> {
+                        activity.successProductsListFromFireStore(productsList)
+                    }
+                }
+
+                // END
+            }
+            .addOnFailureListener { e ->
+                // Hide the progress dialog if there is any error based on the base class instance.
+                when(activity){
+                    is CartListActivity -> {
+                        activity.hideProgressDialog()
+                    }
+                    is CheckoutActivity -> {
+                        activity.hideProgressDialog()
+                    }
+                }
+
+
+                Log.e("Get Product List", "Error while getting all product list.", e)
+            }
+    }
+
+
+
+
+    // Create a function to remove the cart item from the cloud firestore.
+    // START
+    /**
+     * A function to remove the cart item from the cloud firestore.
+     *
+     * @param activity activity class.
+     * @param cart_id cart id of the item.
+     */
+    fun removeItemFromCart(context: Context, cart_id: String) {
+
+        // Cart items collection name
+        mFireStore.collection(Constants.CART_ITEMS)
+            .document(cart_id) // cart id
+            .delete()
+            .addOnSuccessListener {
+
+                // TNotify the success result of the removed cart item from the list to the base class.
+                // START
+                // Notify the success result of the removed cart item from the list to the base class.
+                when (context) {
+                    is CartListActivity -> {
+                        context.itemRemovedSuccess()
+                    }
+                }
+                // END
+            }
+            .addOnFailureListener { e ->
+
+                // Hide the progress dialog if there is any error.
+                when (context) {
+                    is CartListActivity -> {
+                        context.hideProgressDialog()
+                    }
+                }
+                Log.e(
+                    context.javaClass.simpleName,
+                    "Error while removing the item from the cart list.",
+                    e
+                )
+            }
+    }
+    //  Create a function to update the cart item in the cloud firestore.
+    // START
+    /**
+     * A function to update the cart item in the cloud firestore.
+     *
+     * @param activity activity class.
+     * @param id cart id of the item.
+     * @param itemHashMap to be updated values.
+     */
+    fun updateMyCart(context: Context, cart_id: String, itemHashMap: HashMap<String, Any>) {
+
+        // Cart items collection name
+        mFireStore.collection(Constants.CART_ITEMS)
+            .document(cart_id) // cart id
+            .update(itemHashMap) // A HashMap of fields which are to be updated.
+            .addOnSuccessListener {
+
+                // Notify the success result of the updated cart items list to the base class.
+                // START
+                // Notify the success result of the updated cart items list to the base class.
+                when (context) {
+                    is CartListActivity -> {
+                        context.itemUpdateSuccess()
+                    }
+                }
+                // END
+            }
+            .addOnFailureListener { e ->
+
+                // Hide the progress dialog if there is any error.
+                when (context) {
+                    is CartListActivity -> {
+                        context.hideProgressDialog()
+                    }
+                }
+
+                Log.e(
+                    context.javaClass.simpleName,
+                    "Error while updating the cart item.",
+                    e
+                )
+            }
+    }
+    // END
+
+    // Create a function to add address to the cloud firestore.
+    // START
+    /**
+     * A function to add address to the cloud firestore.
+     *
+     * @param activity
+     * @param addressInfo
+     */
+    fun addAddress(activity: AddEditAddressActivity, addressInfo: Address) {
+
+        // Collection name address.
+        mFireStore.collection(Constants.ADDRESSES)
+            .document()
+            // Here the userInfo are Field and the SetOption is set to merge. It is for if we wants to merge
+            .set(addressInfo, SetOptions.merge())
+            .addOnSuccessListener {
+
+                //  Notify the success result to the base class.
+                // START
+                // Here call a function of base activity for transferring the result to it.
+                activity.addUpdateAddressSuccess()
+                // END
+            }
+            .addOnFailureListener { e ->
+                activity.hideProgressDialog()
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error while adding the address.",
+                    e
+                )
+            }
+    }
+
+
+
+    // TODO Step 2: Create a function to get the list of addresses from the cloud firestore.
+    // START
+    /**
+     * A function to get the list of address from the cloud firestore.
+     *
+     * @param activity
+     */
+    fun getAddressesList(activity: AddressListActivity) {
+        // The collection name for PRODUCTS
+        mFireStore.collection(Constants.ADDRESSES)
+            .whereEqualTo(Constants.USER_ID, getCurrentUserID())
+            .get() // Will get the documents snapshots.
+            .addOnSuccessListener { document ->
+                // Here we get the list of boards in the form of documents.
+                Log.e(activity.javaClass.simpleName, document.documents.toString())
+                // Here we have created a new instance for address ArrayList.
+                val addressList: ArrayList<Address> = ArrayList()
+
+                // A for loop as per the list of documents to convert them into Boards ArrayList.
+                for (i in document.documents) {
+
+                    val address = i.toObject(Address::class.java)!!
+                    address.id = i.id
+
+                    addressList.add(address)
+                }
+
+                // Notify the success result to the base class.
+                // START
+                activity.successAddressListFromFirestore(addressList)
+                // END
+            }
+            .addOnFailureListener { e ->
+                // Here call a function of base activity for transferring the result to it.
+
+                activity.hideProgressDialog()
+
+                Log.e(activity.javaClass.simpleName, "Error while getting the address list.", e)
+            }
+
+    }
+
+
+    /**
+     * A function to update the existing address to the cloud firestore.
+     *
+     * @param activity Base class
+     * @param addressInfo Which fields are to be updated.
+     * @param addressId existing address id
+     */
+    fun updateAddress(activity: AddEditAddressActivity, addressInfo: Address, addressId: String) {
+
+        mFireStore.collection(Constants.ADDRESSES)
+            .document(addressId)
+            // Here the userInfo are Field and the SetOption is set to merge. It is for if we wants to merge
+            .set(addressInfo, SetOptions.merge())
+            .addOnSuccessListener {
+
+                // Here call a function of base activity for transferring the result to it.
+                activity.addUpdateAddressSuccess()
+            }
+            .addOnFailureListener { e ->
+                activity.hideProgressDialog()
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error while updating the Address.",
+                    e
+                )
+            }
+    }
+
+    fun deleteAddress(activity: AddressListActivity, addressId: String) {
+
+        mFireStore.collection(Constants.ADDRESSES)
+            .document(addressId)
+            .delete()
+            .addOnSuccessListener {
+
+                // TODO Step 8: Notify the success result.
+                // START
+                // Here call a function of base activity for transferring the result to it.
+                activity.deleteAddressSuccess()
+                // END
+            }
+            .addOnFailureListener { e ->
+                activity.hideProgressDialog()
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error while deleting the address.",
+                    e
+                )
+            }
+    }
+
+
+    /**
+     * A function to place an order of the user in the cloud firestore.
+     *
+     * @param activity base class
+     * @param order Order Info
+     */
+    fun placeOrder(activity: CheckoutActivity, order: Order) {
+
+        mFireStore.collection(Constants.ORDERS)
+            .document()
+            // Here the userInfo are Field and the SetOption is set to merge. It is for if we wants to merge
+            .set(order, SetOptions.merge())
+            .addOnSuccessListener {
+
+                // Notify the success result.
+                // START
+                // Here call a function of base activity for transferring the result to it.
+                activity.orderPlacedSuccess()
+                // END
+            }
+            .addOnFailureListener { e ->
+
+                // Hide the progress dialog if there is any error.
+                activity.hideProgressDialog()
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error while placing an order.",
+                    e
+                )
+            }
+    }
+    // END
+    // Create a function to update all the required details in the cloud firestore after placing the order successfully.
+    // START
+    /**
+     * A function to update all the required details in the cloud firestore after placing the order successfully.
+     *
+     * @param activity Base class.
+     * @param cartList List of cart items.
+     */
+    fun updateAllDetails(activity: CheckoutActivity, cartList: ArrayList<CartItem>) {
+
+        val writeBatch = mFireStore.batch()
+
+        // Here we will update the product stock in the products collection based to cart quantity.
+        for (cart in cartList) {
+
+            val productHashMap = HashMap<String, Any>()
+
+            productHashMap[Constants.STOCK_QUANTITY] =
+                (cart.stock_quantity.toInt() - cart.cart_quantity.toInt()).toString()
+
+            val documentReference = mFireStore.collection(Constants.PRODUCTS)
+                .document(cart.product_id)
+
+            writeBatch.update(documentReference, productHashMap)
+        }
+
+        // Delete the list of cart items
+        for (cart in cartList) {
+
+            val documentReference = mFireStore.collection(Constants.CART_ITEMS)
+                .document(cart.id)
+            writeBatch.delete(documentReference)
+        }
+
+        writeBatch.commit().addOnSuccessListener {
+
+            //  Finally after performing all the operation notify the user with the success result.
+            // START
+            //  activity.allDetailsUpdatedSuccessfully()
+            // END
+
+        }.addOnFailureListener { e ->
+            // Here call a function of base activity for transferring the result to it.
+            activity.hideProgressDialog()
+
+            Log.e(activity.javaClass.simpleName, "Error while updating all the details after order placed.", e)
+        }
+    }
+    // END
+
 }
