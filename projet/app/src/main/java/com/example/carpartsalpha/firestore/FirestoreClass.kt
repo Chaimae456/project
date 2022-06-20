@@ -863,7 +863,7 @@ class FirestoreClass {
 
             //  Finally after performing all the operation notify the user with the success result.
             // START
-            //  activity.allDetailsUpdatedSuccessfully()
+            activity.allDetailsUpdatedSuccessfully()
             // END
 
         }.addOnFailureListener { e ->
